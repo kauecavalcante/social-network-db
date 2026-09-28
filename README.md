@@ -2,6 +2,13 @@
 
 Modelagem do banco de dados de uma **rede social para programadores**, feita para a disciplina de **Laboratório de Programação** (Medida de Eficiência).
 
+## 👥 Autores
+
+| Nome | GitHub |
+|---|---|
+| Kauê Cavalcante | [@kauecavalcante](https://github.com/kauecavalcante) |
+| Bernardo Torres | [@bernardots23](https://github.com/bernardots23) |
+
 ## 📌 Diagrama ER
 
 ![Diagrama ER](docs/diagrama.png)
