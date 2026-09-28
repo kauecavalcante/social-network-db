@@ -1,0 +1,156 @@
+// Social Network DB - cole este código em https://dbdiagram.io/d
+
+Table users {
+  id int [pk, increment]
+  name varchar(100) [not null]
+  username varchar(50) [not null, unique]
+  email varchar(150) [not null, unique]
+  password_hash varchar(255) [not null]
+  birth_date date
+  city varchar(100)
+  country varchar(100)
+  bio text
+  profile_picture varchar(255)
+  job_title varchar(100)
+  company varchar(100)
+  experience_years int
+  github_url varchar(255)
+  linkedin_url varchar(255)
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table posts {
+  id int [pk, increment]
+  user_id int [not null, ref: > users.id]
+  group_id int [ref: > tech_groups.id, note: 'NULL = post no perfil']
+  content text [not null]
+  link_url varchar(255)
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table comments {
+  id int [pk, increment]
+  post_id int [not null, ref: > posts.id]
+  user_id int [not null, ref: > users.id]
+  content text [not null]
+  created_at timestamp
+}
+
+Table likes {
+  id int [pk, increment]
+  user_id int [not null, ref: > users.id]
+  post_id int [ref: > posts.id]
+  comment_id int [ref: > comments.id]
+  created_at timestamp
+  Note: 'post_id OU comment_id (exatamente um)'
+}
+
+Table friends {
+  user_id int [pk, ref: > users.id]
+  friend_id int [pk, ref: > users.id]
+  status enum_friend_status
+  created_at timestamp
+}
+
+Table follows {
+  follower_id int [pk, ref: > users.id]
+  following_id int [pk, ref: > users.id]
+  created_at timestamp
+}
+
+Table messages {
+  id int [pk, increment]
+  sender_id int [not null, ref: > users.id]
+  receiver_id int [not null, ref: > users.id]
+  content text [not null]
+  is_read boolean
+  sent_at timestamp
+}
+
+Table skills {
+  id int [pk, increment]
+  name varchar(50) [not null, unique]
+  category varchar(50)
+}
+
+Table user_skills {
+  user_id int [pk, ref: > users.id]
+  skill_id int [pk, ref: > skills.id]
+  level enum_skill_level
+  years_used int
+}
+
+Table tech_groups {
+  id int [pk, increment]
+  name varchar(100) [not null, unique]
+  description text
+  topic varchar(50) [not null]
+  created_by int [ref: > users.id]
+  created_at timestamp
+}
+
+Table group_members {
+  group_id int [pk, ref: > tech_groups.id]
+  user_id int [pk, ref: > users.id]
+  role enum_group_role
+  joined_at timestamp
+}
+
+Table challenges {
+  id int [pk, increment]
+  title varchar(150) [not null]
+  description text [not null]
+  difficulty enum_difficulty [not null]
+  points int [not null]
+  created_by int [ref: > users.id]
+  start_date datetime
+  end_date datetime
+  created_at timestamp
+}
+
+Table challenge_participants {
+  challenge_id int [pk, ref: > challenges.id]
+  user_id int [pk, ref: > users.id]
+  joined_at timestamp
+}
+
+Table submissions {
+  id int [pk, increment]
+  challenge_id int [not null]
+  user_id int [not null]
+  code text [not null]
+  language varchar(30) [not null]
+  status enum_submission_status
+  score int
+  submitted_at timestamp
+}
+
+Ref: submissions.(challenge_id, user_id) > challenge_participants.(challenge_id, user_id)
+
+Table rankings {
+  user_id int [pk, ref: - users.id]
+  total_points int
+  challenges_joined int
+  challenges_completed int
+  position int
+  updated_at timestamp
+}
+
+Enum enum_friend_status { pending
+ accepted
+ blocked }
+Enum enum_skill_level { beginner
+ intermediate
+ advanced
+ expert }
+Enum enum_group_role { member
+ moderator
+ admin }
+Enum enum_difficulty { easy
+ medium
+ hard }
+Enum enum_submission_status { pending
+ accepted
+ rejected }
