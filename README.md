@@ -24,7 +24,8 @@ social-network-db/
 │   ├── diagrama.png     # Diagrama ER exportado
 │   └── diagrama.dbml    # Código do diagrama (dbdiagram.io)
 └── sql/
-    └── social_network.sql   # Script de criação do banco + dados de exemplo
+    ├── social_network.sql   # Script de criação do banco + dados de exemplo
+    └── consultas.sql        # Consultas de exemplo
 ```
 
 ## 🧱 Tabelas
@@ -58,6 +59,12 @@ mysql -u root -p < sql/social_network.sql
 ```
 
 O script apaga e recria o banco `social_network`, cria as tabelas, índices, a procedure de ranking e insere dados de exemplo.
+
+Depois, para rodar as consultas de exemplo:
+
+```bash
+mysql -u root -p < sql/consultas.sql
+```
 
 ### Consultas de exemplo
 
